@@ -62,6 +62,21 @@ app.post("/deposit", accountAlreadyExists, (req, res) => {
   return res.status(201).json(operation)
 })
 
+app.post("/withdraw", accountAlreadyExists, (req, res) => {
+  const { user } = req
+  const { qtd, description } = req.body;
+
+  const operation = {
+    description,
+    type: "credit",
+    qtd,
+    createdAt: new Date()
+  }
+
+  user.statement.push(operation)
+  return res.status(201).json(operation)
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
