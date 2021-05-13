@@ -43,6 +43,10 @@ app.get("/statement", accountAlreadyExists, (req, res) => {
   return res.json(user.statement)
 })
 
+app.get("/account", (req, res) => {
+  return res.json(users)
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
