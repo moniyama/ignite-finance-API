@@ -18,6 +18,17 @@ const accountAlreadyExists = (req, res, next) => {
   return next()
 }
 
+const checkBalance = (statement) => {
+  const balance = statement.reduce((acc, obj) => {
+    if (obj.type === "credit") {
+      return acc + obj.qtd
+    } else {
+      return acc - obj.qtd
+    }
+  }, 0)
+  return balance
+}
+
 app.post("/account", (req, res) => {
   const { name, cpf } = req.body;
 
@@ -31,7 +42,7 @@ app.post("/account", (req, res) => {
     id: uuid(),
     cpf,
     name,
-    statement: [{ teste: "oi" }]
+    statement: []
   }
 
   users.push(user)
@@ -53,7 +64,7 @@ app.post("/deposit", accountAlreadyExists, (req, res) => {
 
   const operation = {
     description,
-    type: "deposit",
+    type: "credit",
     qtd,
     createdAt: new Date()
   }
@@ -64,11 +75,15 @@ app.post("/deposit", accountAlreadyExists, (req, res) => {
 
 app.post("/withdraw", accountAlreadyExists, (req, res) => {
   const { user } = req
-  const { qtd, description } = req.body;
+  const { qtd } = req.body;
+
+  const balance = checkBalance(user.statement)
+  if (balance < qtd) {
+    return res.status(400).json({ message: "Saldo insuficiente" })
+  }
 
   const operation = {
-    description,
-    type: "credit",
+    type: "debit",
     qtd,
     createdAt: new Date()
   }
