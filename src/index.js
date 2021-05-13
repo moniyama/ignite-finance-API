@@ -47,6 +47,21 @@ app.get("/account", (req, res) => {
   return res.json(users)
 })
 
+app.post("/deposit", accountAlreadyExists, (req, res) => {
+  const { user } = req
+  const { qtd, description } = req.body;
+
+  const operation = {
+    description,
+    type: "deposit",
+    qtd,
+    createdAt: new Date()
+  }
+
+  user.statement.push(operation)
+  return res.status(201).json(operation)
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
