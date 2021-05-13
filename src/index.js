@@ -20,11 +20,17 @@ app.post("/account", (req, res) => {
     id: uuid(),
     cpf,
     name,
-    statement: []
+    statement: [{ teste: "oi" }]
   }
 
   users.push(user)
   return res.status(201).json(user)
+})
+
+app.get("/statement/:cpf", (req, res) => {
+  const { cpf } = req.params
+  const user = users.find(user => user.cpf === cpf)
+  return res.json(user.statement)
 })
 
 app.listen(port, () => {
