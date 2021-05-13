@@ -7,6 +7,17 @@ app.use(express.json())
 
 const users = []
 
+const accountAlreadyExists = (req, res, next) => {
+  const { cpf } = req.headers
+  const user = users.find(user => user.cpf === cpf)
+
+  if (!user) {
+    return res.status(400).json({ message: "Conta inexistente" })
+  }
+  req.user = user;
+  return next()
+}
+
 app.post("/account", (req, res) => {
   const { name, cpf } = req.body;
 
@@ -27,14 +38,8 @@ app.post("/account", (req, res) => {
   return res.status(201).json(user)
 })
 
-app.get("/statement/:cpf", (req, res) => {
-  const { cpf } = req.params
-  const user = users.find(user => user.cpf === cpf)
-
-  if(!user) {
-    return res.status(400).json({ message: "Conta inexistente" })
-  }
-
+app.get("/statement", accountAlreadyExists, (req, res) => {
+  const { user } = req
   return res.json(user.statement)
 })
 
