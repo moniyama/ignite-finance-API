@@ -30,6 +30,11 @@ app.post("/account", (req, res) => {
 app.get("/statement/:cpf", (req, res) => {
   const { cpf } = req.params
   const user = users.find(user => user.cpf === cpf)
+
+  if(!user) {
+    return res.status(400).json({ message: "Conta inexistente" })
+  }
+
   return res.json(user.statement)
 })
 
