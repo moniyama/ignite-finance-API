@@ -1,27 +1,30 @@
 const express = require('express')
 const app = express()
 const port = 3333
+const { v4: uuid } = require('uuid');
 
 app.use(express.json())
 
-app.get('/courses', (req, res) => {
-  res.json(["Curso 1", "Curso 2", "Curso 3"])
-})
+const users = []
 
-app.post('/courses', (req, res) => {
-  res.json(["Curso 1", "Curso 2", "Curso 3", "Curso 4"])
-})
+app.post("/account", (req, res) => {
+  const { name, cpf } = req.body;
 
-app.put('/courses/:id', (req, res) => {
-  res.json(["Curso 5", "Curso 2", "Curso 3", "Curso 4"])
-})
+  const cpfAlreadyExists = users.some(user => user.cpf === cpf)
 
-app.patch('/courses/:id', (req, res) => {
-  res.json(["Curso 5", "Curso 6", "Curso 3", "Curso 4"])
-})
+  if (cpfAlreadyExists) {
+    return res.status(400).json({ message: "CPF já cadastrado" })
+  }
 
-app.delete('/courses/:id', (req, res) => {
-  res.json(["Curso 5", "Curso 6", "Curso 3"])
+  const user = {
+    id: uuid(),
+    cpf,
+    name,
+    statement: []
+  }
+
+  users.push(user)
+  return res.status(201).json(user)
 })
 
 app.listen(port, () => {
