@@ -68,6 +68,10 @@ app.get("/account", accountAlreadyExists, (req, res) => {
   return res.json(user)
 })
 
+app.get("/allAccounts", (req, res) => {
+  return res.json(users)
+})
+
 app.post("/deposit", accountAlreadyExists, (req, res) => {
   const { user } = req
   const { qtd, description } = req.body;
