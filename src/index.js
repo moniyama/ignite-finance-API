@@ -110,6 +110,12 @@ app.put("/account", accountAlreadyExists, (req, res) => {
   return res.status(201).send()
 })
 
+app.delete("/account", accountAlreadyExists, (req, res) => {
+  const { user } = req
+  users.splice(user, 1)
+  return res.status(200).json(users)
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
