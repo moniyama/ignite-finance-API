@@ -120,6 +120,11 @@ app.delete("/account", accountAlreadyExists, (req, res) => {
   return res.status(200).json(users)
 })
 
+app.get("/balance", accountAlreadyExists, (req, res) => {
+  const { user } = req
+  return res.json(checkBalance(user.statement))
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
