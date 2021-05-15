@@ -100,6 +100,15 @@ app.post("/withdraw", accountAlreadyExists, (req, res) => {
   return res.status(201).json(operation)
 })
 
+app.put("/account", accountAlreadyExists, (req, res) => {
+  const { user } = req
+  const { name } = req.body
+
+  user.name = name
+
+  return res.status(201).send()
+})
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
