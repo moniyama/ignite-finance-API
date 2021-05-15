@@ -54,6 +54,15 @@ app.get("/statement", accountAlreadyExists, (req, res) => {
   return res.json(user.statement)
 })
 
+app.get("/statement/date", accountAlreadyExists, (req, res) => {
+  const { user } = req
+  const { date } = req.query
+
+  const formatDate = new Date(`${date} 00:00`).toDateString()
+  const result = user.statement.filter(statement => statement.createdAt.toDateString() === formatDate)
+  return res.json(result)
+})
+
 app.get("/account", (req, res) => {
   return res.json(users)
 })
@@ -87,7 +96,6 @@ app.post("/withdraw", accountAlreadyExists, (req, res) => {
     qtd,
     createdAt: new Date()
   }
-
   user.statement.push(operation)
   return res.status(201).json(operation)
 })
