@@ -1,5 +1,13 @@
 # API FINANCEIRA
 
+## Capítulo introdutório sobre API
+
+Capítulo 1 do curso IGNITE da @rocketseat_oficial, ministrada pela @dani_leao
+
+Conceitos e ideias básicas sobre **API REST**,
+sendo aplicada em um projeto de API financeira,
+que apresenta os seguinte critérios:
+
 ## Requisitos
 
 - [ ]  Criar uma conta `/account`
